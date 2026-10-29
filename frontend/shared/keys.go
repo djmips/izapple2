@@ -41,6 +41,7 @@ const (
 	KeyF8
 	KeyF9
 	KeyF10
+	KeyF11
 	KeyF12
 	KeyPause
 	KeyPrintScreen

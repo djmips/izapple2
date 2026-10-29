@@ -46,6 +46,14 @@ func (a *Apple2) GetPC() uint16 {
 	return pc
 }
 
+// GetRegisters returns the registers of the processor: A, X, Y, the status P,
+// the stack pointer and the program counter
+func (a *Apple2) GetRegisters() (uint8, uint8, uint8, uint8, uint8, uint16) {
+	regA, regX, regY, regP := a.cpu.GetAXYP()
+	pc, sp := a.cpu.GetPCAndSP()
+	return regA, regX, regY, regP, sp, pc
+}
+
 // LoadDisk inserts a file on a removable media drive, numbered in the order
 // of GetRemovableMediaDrives, right away. SendLoadDisk does the same from
 // another goroutine, and only reports the errors on the console.

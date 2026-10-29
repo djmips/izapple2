@@ -77,6 +77,8 @@ func (k *wasmKeyboard) putKey(key ebiten.Key) {
 		}
 	case ebiten.KeyF9:
 		k.a.SendCommand(izapple2.CommandDumpDebugInfo)
+	case ebiten.KeyF11:
+		k.a.SendCommand(izapple2.CommandNMI)
 	case ebiten.KeyF12, ebiten.KeyPause:
 		k.a.SendCommand(izapple2.CommandPauseUnpause)
 	}

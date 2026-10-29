@@ -99,6 +99,7 @@ const HelpMessage = `
           F7: Show/Hide pages
           F8: Show/Hide drop targets
          F10: Next character set
+         F11: NMI, as a button on /NMI
     Ctrl-F10: Show/Hide character set
    Shift-F10: Show/Hide alternate text
          F12: Save screen snapshot

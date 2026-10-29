@@ -90,6 +90,8 @@ func sdlKey(sym sdl.Keycode) shared.Key {
 		return shared.KeyF9
 	case sdl.K_F10:
 		return shared.KeyF10
+	case sdl.K_F11:
+		return shared.KeyF11
 	case sdl.K_F12:
 		return shared.KeyF12
 	case sdl.K_PAUSE:

@@ -68,6 +68,51 @@ func main() {
 			fmt.Printf("%v\n", a.GetCycles())
 		case "reset":
 			a.SendCommand(izapple2.CommandReset)
+		case "nmi":
+			a.SendCommand(izapple2.CommandNMI)
+		case "disk":
+			if len(parts) < 3 {
+				fmt.Println("Usage: disk <drive> <file>")
+			} else if drive, err := strconv.Atoi(parts[1]); err != nil || drive < 1 {
+				fmt.Println("Usage: disk <drive number from 1> <file>")
+			} else {
+				a.SendLoadDisk(drive-1, strings.Join(parts[2:], " "))
+			}
+
+		// Inspection commands, only while paused
+		case "regs":
+			if !a.IsPaused() {
+				fmt.Println("Pause the emulation first")
+			} else {
+				regA, regX, regY, regP, sp, pc := a.GetRegisters()
+				fmt.Printf("PC=%04x A=%02x X=%02x Y=%02x P=%02x SP=%02x\n", pc, regA, regX, regY, regP, sp)
+			}
+		case "peek":
+			count, address := uint64(1), uint64(0)
+			err := fmt.Errorf("missing arguments")
+			if len(parts) == 2 || len(parts) == 3 {
+				address, err = strconv.ParseUint(strings.TrimPrefix(parts[len(parts)-1], "$"), 16, 16)
+			}
+			if err == nil && len(parts) == 3 {
+				count, err = strconv.ParseUint(parts[1], 10, 16)
+			}
+			if err != nil {
+				fmt.Println("Usage: peek [<count>] <hex address>")
+			} else if !a.IsPaused() {
+				fmt.Println("Pause the emulation first")
+			} else {
+				for i := uint64(0); i < count; i++ {
+					addr := uint16(address + i)
+					if i%16 == 0 {
+						if i != 0 {
+							fmt.Println()
+						}
+						fmt.Printf("%04x:", addr)
+					}
+					fmt.Printf(" %02x", a.Peek(addr))
+				}
+				fmt.Println()
+			}
 
 		// Keyboard related commands
 		case "key":
@@ -139,6 +184,18 @@ Emulation control commands:
 		Prints the current cycle count
 	reset
 		Sends a reset to the emulator
+	nmi
+		Pulls the NMI line, as a button wired to /NMI. Taken before the next instruction.
+	disk <drive> <file>
+		Inserts the diskette <file> in <drive>, 1 for the first, in the order the emulator lists
+		them. The emulator may write to it.
+
+Inspection commands, only while paused:
+	regs
+		Prints the registers of the processor.
+	peek [<count>] <address>
+		Prints <count> bytes, 1 by default, from the hexadecimal <address> as the processor
+		reads them now. The I/O area from $C000 to $CFFF reads as 0.
 
 Keyboard related commands:
 	key <key>

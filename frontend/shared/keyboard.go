@@ -119,6 +119,8 @@ func (k *Keyboard) command(key Key, ctrl bool, shift bool) {
 		} else {
 			k.a.SendCommand(izapple2.CommandNextCharGenPage)
 		}
+	case KeyF11:
+		k.a.SendCommand(izapple2.CommandNMI)
 	case KeyF12, KeyPrintScreen:
 		if ctrl {
 			screen.AddScenario(k.a.GetVideoSource(), "../../screen/test_resources/")

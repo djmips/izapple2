@@ -109,6 +109,8 @@ func ebitenKey(key ebiten.Key) shared.Key {
 		return shared.KeyF9
 	case ebiten.KeyF10:
 		return shared.KeyF10
+	case ebiten.KeyF11:
+		return shared.KeyF11
 	case ebiten.KeyF12:
 		return shared.KeyF12
 	case ebiten.KeyPause:

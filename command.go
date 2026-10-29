@@ -25,6 +25,9 @@ const (
 	CommandStart
 	// CommandComplex for commands that use a struct with parameters
 	CommandComplex
+	// CommandNMI pulls the NMI line of the 6502, as a button wired to /NMI on
+	// the slots would. Freezer cards and their software use it.
+	CommandNMI
 )
 
 type command interface {
@@ -88,6 +91,8 @@ func (a *Apple2) executeCommand(command command) {
 		a.cpu.SetTrace(a.cpuTrace)
 	case CommandReset:
 		a.reset()
+	case CommandNMI:
+		a.cpu.RaiseNMI()
 	case CommandComplex:
 		switch t := command.(type) {
 		case *commandLoadDisk:
